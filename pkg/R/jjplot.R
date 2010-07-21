@@ -3,9 +3,10 @@
 require("grid")
 require("reshape")
 
-source("scales.R")
-source("stats.R")
-source("geoms.R")
+
+# source("scales.R")
+# source("stats.R")
+# source("geoms.R")
 
 ### UTILITY FUNCTIONS ###
 .call.with.data <- function(cc, state, prefix = "jjplot.stat", ...) {

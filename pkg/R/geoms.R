@@ -74,6 +74,7 @@ jjplot.geom.tile <- function(state,
 
 
 jjplot.geom.area <- function(state,
+                             alpha = NULL,
                              color = NULL,
                              border = NULL) {
   if (is.null(state$data$color) || !is.null(color)) {
@@ -81,14 +82,16 @@ jjplot.geom.area <- function(state,
                  c(0, state$data$y, 0),
                  default.units = "native",
                  gp = gpar(fill = .match.scale(color, state$data$color, state$scales), 
-                   col = .match.scale(border, state$data$border, state$scales, type = "border")))
+                   col = .match.scale(border, state$data$border, state$scales, type = "border"),
+                   alpha = .match.scale(alpha, state$data$alpha, state$scales, type = "alpha")))
   } else {
     by(state$data, state$data$color, function(xx)
        grid.polygon(c(xx$x[1], xx$x, xx$x[length(xx$x)]),
                  c(0, xx$y, 0),
                  default.units = "native",
                  gp = gpar(fill = .match.scale(color, xx$color, state$scales), 
-                   col = .match.scale(border, xx$border, state$scales, type = "border"))))
+                   col = .match.scale(border, xx$border, state$scales, type = "border"),
+                   alpha = .match.scale(alpha, state$data$alpha, state$scales, type = "alpha"))))
   }
 }
   
@@ -356,7 +359,7 @@ jjplot.geom.box <- function(state,
   list(x = c(min(as.numeric(state$data$x)) - width / 2, max(as.numeric(state$data$x)) + width / 2))
 }        
 
-.jjplot.expand.area <- function(state) {
+.jjplot.expand.area <- function(state, ...) {
   list(y = 0)
 }
 
