@@ -289,6 +289,16 @@ require("reshape")
   
   yrange.new[1] <- yrange[1] - (yrange[2] - yrange[1]) * expand[2]
   yrange.new[2] <- yrange[2] + (yrange[2] - yrange[1]) * expand[2]
+
+  ## If the range is 0, expand it to 1.
+  if (xrange.new[1] == xrange.new[2]) {
+    xrange.new[1] <- xrange.new[1] - 0.5
+    xrange.new[2] <- xrange.new[2] + 0.5    
+  }
+  if (yrange.new[1] == yrange.new[2]) {
+    yrange.new[1] <- yrange.new[1] - 0.5
+    yrange.new[2] <- yrange.new[2] + 0.5    
+  }
   
   list(xrange = xrange.new, yrange = yrange.new,
        pretty.x = pretty.x, pretty.y = pretty.y,
@@ -345,7 +355,12 @@ require("reshape")
              default.units = "native")
   
   midpoints <- function(v) {
-    (v[-1] + v[-length(v)]) / 2
+    vv <- (v[-1] + v[-length(v)]) / 2
+    if (length(vv) == 0) {
+      v
+    } else {
+      vv
+    }
   }
 
   grid.grill(midpoints(plot.params$pretty.y), midpoints(plot.params$pretty.x),
