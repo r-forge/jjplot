@@ -39,16 +39,30 @@ jjplot.geom.line <- function(state,
 jjplot.geom.bar <- function(state,
                             alpha = NULL,
                             color = NULL,
-                            border = NULL, width = 1) {
-  grid.rect(state$data$x,
-            0,
-            width,
-            state$data$y,
-            just = c("center", "bottom"),
-            default.units = "native",
-            gp = gpar(fill = .match.scale(color, state$data$color, state$scales),
-              alpha = .match.scale(alpha, state$data$alpha, state$scales, type="alpha"),
-              col = .match.scale(border, state$data$border, state$scales, type = "border")))
+                            border = NULL,
+                            width = 1,
+                            horizontal = FALSE) {
+  if (horizontal) {
+    grid.rect(0, 
+              state$data$y,
+              state$data$x,
+              width,              
+              just = c("left", "center"),
+              default.units = "native",
+              gp = gpar(fill = .match.scale(color, state$data$color, state$scales),
+                alpha = .match.scale(alpha, state$data$alpha, state$scales, type="alpha"),
+                col = .match.scale(border, state$data$border, state$scales, type = "border")))
+  } else {
+    grid.rect(state$data$x,
+              0,
+              width,
+              state$data$y,
+              just = c("center", "bottom"),
+              default.units = "native",
+              gp = gpar(fill = .match.scale(color, state$data$color, state$scales),
+                alpha = .match.scale(alpha, state$data$alpha, state$scales, type="alpha"),
+                col = .match.scale(border, state$data$border, state$scales, type = "border")))
+  }
 }
 
 jjplot.geom.tile <- function(state,
@@ -343,6 +357,7 @@ jjplot.geom.box <- function(state,
 
 .jjplot.expand.bar <- function(state,
                                width = 1.0,
+                               horizontal = FALSE,
                                color = NULL) {
   ## FIXME
   ##  xlim <- range(as.numeric(layer.data$x))
@@ -351,7 +366,11 @@ jjplot.geom.box <- function(state,
   ##    list(x = c(xlim[1] - width / 2 + x.padding,
   ##           xlim[2] + width / 2 - x.padding), y = 0)
   ##  } else {
-  list(y = 0)
+  if (horizontal) {
+    list(x = 0)
+  } else {
+    list(y = 0)
+  }
   ##  }
 }
 

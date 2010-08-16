@@ -211,7 +211,7 @@ require("reshape")
     
     if (is.null(x.factor.order)) {
       if (is.factor(state$data$x)) {        
-        sort.x <- state$data$sort.x
+        sort.x <- state$sort.x
         sort.x <- .try.subset(sort.x, .subset$facet.x)
         sort.x <- .try.subset(sort.x, .subset$facet.y)
         
@@ -224,7 +224,7 @@ require("reshape")
     }
     if (is.null(y.factor.order)) {
       if (is.factor(state$data$y)) {
-        sort.y <- state$data$sort.y
+        sort.y <- state$sort.y
         sort.y <- .try.subset(sort.y, .subset$facet.x)
         sort.y <- .try.subset(sort.y, .subset$facet.y)
         
@@ -240,6 +240,7 @@ require("reshape")
       } 
     }
   }
+
   
   .formula.apply(f, function(...) NULL,
                  update.range,
