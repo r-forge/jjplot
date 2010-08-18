@@ -151,7 +151,7 @@ jjplot.geom.map <- function(state, database) {
 
 jjplot.geom.abline <- function(state,
                                a = NULL, b = NULL,
-                               lwd = 1.5, col = NULL, lty = "solid") {
+                               lwd = 1.5, color = NULL, lty = "solid") {
   ## Find limits
   xlim <- convertX(unit(c(0, 1), "npc"), "native", valueOnly = TRUE)
   ylim <- convertY(unit(c(0, 1), "npc"), "native", valueOnly = TRUE)      
@@ -196,7 +196,7 @@ jjplot.geom.abline <- function(state,
                 default.units = "native",
                 gp = gpar(lwd = lwd,
                   lty = lty,
-                  col = .match.scale(col, state$data$color, state$scales)))
+                  col = .match.scale(color, state$data$color, state$scales)))
 }
     
 jjplot.geom.hline <- function(state,
