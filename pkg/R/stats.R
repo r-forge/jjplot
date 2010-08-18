@@ -68,11 +68,10 @@ jjplot.stat.table <- function(state) {
 
 jjplot.stat.fun <- function(state,
                             fun,
-                            stepsize=NULL,
-                            sequence=NULL) {
-  y <- sapply(sequence,fun)
-  state$data <- .bind.attr.columns(data.frame(x=seq,y=y),
-                                   state)
+                            from, to, n = 100) {
+  x <- seq(from = from, to = to, length.out = n)
+  y <- fun(x)
+  state$data <- data.frame(x=x, y=y)
   state
 }
 
