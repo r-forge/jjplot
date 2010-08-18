@@ -68,9 +68,10 @@ jjplot.stat.table <- function(state) {
 
 jjplot.stat.fun <- function(state,
                             fun,
-                            from, to, n = 100) {
+                            from, to, n = 100,
+                            ...) {
   x <- seq(from = from, to = to, length.out = n)
-  y <- fun(x)
+  y <- fun(x, ...)
   state$data <- data.frame(x=x, y=y)
   state$x.expr <- substitute(from:to, list(from = from, to = to))
   state$y.expr <- substitute(f(x), list(x = state$x.expr,
