@@ -267,8 +267,10 @@ jjplot.stat.sort <- function(state,
   state
 }
 
-jjplot.stat.density <- function(state) {
-  dd <- density(as.numeric(state$data$x))
+jjplot.stat.density <- function(state, ...) {
+  dd <- density(as.numeric(state$data$x),
+                weights=state$data$y,
+                ...)
   result <- data.frame(x = dd$x, y = dd$y)
   state$data <- .bind.attr.columns(result, state$data)
   state$y.expr <- substitute(Density(x), list(x = state$x.expr))
