@@ -196,12 +196,22 @@ require("reshape")
       expansion <- NULL
     }
 
-    padding.x <<- c(expansion$x, padding.x)
-    padding.y <<- c(expansion$y, padding.y)
+
+    print(expansion$x)
+    ## HACK!!!
+    if (is.factor(state$data$x)) {
+      padding.x <<- c(expansion$x, padding.x)
+    } else {
+      xrange <<- .jjplot.expand.range(state$data$x, expansion$x)
+    }
+    ## padding.y <<- c(expansion$y, padding.y)
     
     xrange <<- .jjplot.expand.range(state$data$x, xrange)
     yrange <<- .jjplot.expand.range(state$data$y, yrange)
-    
+
+
+    yrange <<- .jjplot.expand.range(state$data$y, expansion$y)
+
     if (is.null(xlab)) {
       xlab <<- state$x.expr
     }

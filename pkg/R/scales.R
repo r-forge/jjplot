@@ -151,6 +151,9 @@ jjplot.scale.POSIXct <- function(data, scale.params) {
                   c = 55,
                   alpha = alpha)
     colors <- colors[-length(colors)]
+    if (!is.null(manual)) {
+      colors <- manual
+    }
     function(z) { colors[z] }
   } else {    
     if (is.null(manual)) {

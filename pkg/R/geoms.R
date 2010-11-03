@@ -144,10 +144,11 @@ jjplot.geom.map <- function(state, database) {
   require(maps)
   regions <- map(database, plot = F)
   print(head(regions$x))
-  grid.lines(regions$x, regions$y, default.units="native")
+  id.lengths <- diff(c(0, which(is.na(regions$x)), length(regions$x)))  
+  grid.polygon(regions$x,
+               regions$y, id.lengths = id.lengths,
+               default.units="native")
 }
-
-
 
 jjplot.geom.abline <- function(state,
                                a = NULL, b = NULL,
@@ -369,7 +370,9 @@ jjplot.geom.box <- function(state,
   if (horizontal) {
     list(x = 0)
   } else {
-    list(y = 0)
+    list(y = 0,
+         x = c(min(as.numeric(state$data$x)) - width,
+           max(as.numeric(state$data$x)) + width))
   }
   ##  }
 }
@@ -381,6 +384,14 @@ jjplot.geom.box <- function(state,
 .jjplot.expand.area <- function(state, ...) {
   list(y = 0)
 }
+
+.jjplot.expand.map <- function(state, database) {
+  require(maps)
+  regions <- map(database, plot = F)
+  list(x = range(regions$x, na.rm = T),
+       y = range(regions$y, na.rm = T))
+}
+
 
 .jjplot.expand.tile <- function(state,
                                 ...) {

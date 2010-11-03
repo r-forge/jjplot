@@ -361,3 +361,9 @@ jjplot.stat.normalize <- function(state, col = 'y', ignore.zeros = T) {
   }
   state
 }
+
+jjplot.stat.smooth <- function(state, ...) {
+  fit <- loess(y ~ x, state$data, ...)
+  state$data$y <- predict(fit, state$data$x)
+  state
+}
