@@ -51,7 +51,20 @@ jjplot.scale <- function(data, scale.params) {
 }
 
 jjplot.scale.default <- function(data, scale.params) {
-  pp <- pretty(range(data))
+  rr <- range(data)
+  pp <- pretty(rr)
+  scale.params$type <- match.arg(scale.params$type,
+                                 c("exact", "pretty"))
+  
+  if (scale.params$type == "exact") {
+    if (rr[1] > pp[1]) {
+      pp[1] = rr[1]
+    }
+    if (rr[2] < pp[length(pp)]) {
+      pp[length(pp)] = rr[2]
+    }
+  }
+  
   list(pretty = pp,
        labels = prettyNum(pp))
 }
@@ -263,7 +276,11 @@ jjplot.theme <- function(theme = c("grey", "bw"),
            right.strip.color = "grey70",
            top.strip.color = "grey70",
            x.axis.angle = 0,
-           y.axis.angle = 0),
+           y.axis.angle = 0,
+           x.axis.type = "pretty",
+           y.axis.type = "pretty",
+           x.axis.expansion = 0.04,
+           y.axis.expansion = 0.04),
          bw = list(grid.color = "grey90",
            plot.background = "white",
            plot.border = "black",
@@ -274,7 +291,11 @@ jjplot.theme <- function(theme = c("grey", "bw"),
            right.strip.color = "grey70",
            top.strip.color = "grey70",
            x.axis.angle = 0,
-           y.axis.angle = 0))
+           y.axis.angle = 0,
+           x.axis.type = "pretty",
+           y.axis.type = "pretty",
+           x.axis.expansion = 0.04,
+           y.axis.expansion = 0.04))
   theme <- match.arg(theme)
   theme <- themes[[theme]]
   theme[names(list(...))] <- list(...)

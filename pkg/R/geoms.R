@@ -73,10 +73,14 @@ jjplot.geom.tile <- function(state,
                              just = c("center","center"),
                              hjust = NULL,
                              vjust = NULL) {
+  distances.x <- diff(sort(state$data$x))
+  min.dist.x <- min(distances.x[distances.x > 0])
+  distances.y <- diff(sort(state$data$y))
+  min.dist.y <- min(distances.y[distances.y > 0])  
   grid.rect(state$data$x,
             state$data$y,
-            1,
-            1,
+            min.dist.x,
+            min.dist.y,
             just = just,
             hjust = hjust, 
             vjust = vjust,
@@ -395,7 +399,14 @@ jjplot.geom.box <- function(state,
 
 .jjplot.expand.tile <- function(state,
                                 ...) {
-  list(y = c(0.5, nlevels(state$data$y) + 0.5),
-       x = c(0.5, nlevels(state$data$x) + 0.5))       
+  distances.x <- diff(sort(state$data$x))
+  min.dist.x <- min(distances.x[distances.x > 0])
+  distances.y <- diff(sort(state$data$y))
+  min.dist.y <- min(distances.y[distances.y > 0])  
+  
+  list(x = c(min(state$data$x) - min.dist.x,
+             max(state$data$x) + min.dist.x),
+       y = c(min(state$data$y) - min.dist.y,
+             max(state$data$y) + min.dist.y))
 }
 

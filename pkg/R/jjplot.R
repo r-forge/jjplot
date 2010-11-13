@@ -174,9 +174,8 @@ require("reshape")
          width = convertWidth(max.width, "lines", valueOnly = TRUE)))
 }
 
-.get.plot.params <- function(f, stats, log.x, log.y, expand,
-                             xlab = NULL, ylab = NULL,
-                             theme,
+.get.plot.params <- function(f, stats, log.x, log.y,
+                             xlab = NULL, ylab = NULL, theme,
                              labels.x = NULL, labels.y = NULL,
                              .subset = NULL, squash.unused = FALSE) {
 
@@ -196,8 +195,6 @@ require("reshape")
       expansion <- NULL
     }
 
-
-    print(expansion$x)
     ## HACK!!!
     if (is.factor(state$data$x)) {
       padding.x <<- c(expansion$x, padding.x)
@@ -264,15 +261,18 @@ require("reshape")
   ylab.rot <- theme$y.axis.angle  
   
   label.x.info <- .jjplot.scale.params(xrange, xlab.rot,
-                                       list(factor.order = x.factor.order))
+                                       list(factor.order = x.factor.order,
+                                            type = theme$x.axis.type))
   label.y.info <- .jjplot.scale.params(yrange, ylab.rot,
-                                       list(factor.order = y.factor.order))
+                                       list(factor.order = y.factor.order,
+                                            type = theme$y.axis.type))
 
   labels.x <- label.x.info$labels
   labels.y <- label.y.info$labels
   pretty.x <- label.x.info$pretty
   pretty.y <- label.y.info$pretty
-  
+
+
   if (log.x) {
     labels.x <- sapply(pretty.x, function(x)
                        substitute(10^x, list(x = x)),
@@ -295,11 +295,11 @@ require("reshape")
   xrange.new <- xrange
   yrange.new <- yrange
   
-  xrange.new[1] <- xrange[1] - (xrange[2] - xrange[1]) * expand[1]
-  xrange.new[2] <- xrange[2] + (xrange[2] - xrange[1]) * expand[1]
+  xrange.new[1] <- xrange[1] - (xrange[2] - xrange[1]) * theme$x.axis.expansion
+  xrange.new[2] <- xrange[2] + (xrange[2] - xrange[1]) * theme$x.axis.expansion
   
-  yrange.new[1] <- yrange[1] - (yrange[2] - yrange[1]) * expand[2]
-  yrange.new[2] <- yrange[2] + (yrange[2] - yrange[1]) * expand[2]
+  yrange.new[1] <- yrange[1] - (yrange[2] - yrange[1]) * theme$y.axis.expansion
+  yrange.new[2] <- yrange[2] + (yrange[2] - yrange[1]) * theme$y.axis.expansion
 
   ## If the range is 0, expand it to 1.
   if (xrange.new[1] == xrange.new[2]) {
@@ -558,7 +558,6 @@ require("reshape")
   
   cat("Facet dimensions: ")
   print(c(width, height))
-
   plot.params <- lapply(1:num.facets,
                         function(ll) {
                           .get.plot.params(f, stats, ...,
@@ -632,8 +631,7 @@ jjplot <- function(f, data = NULL,
                    facet.xorder = NULL, facet.yorder = NULL,
                    labels.x = NULL, labels.y = NULL,
                    squash.unused = FALSE,
-                   theme = jjplot.theme(),
-                   expand = c(0.04, 0.04)) {
+                   theme = jjplot.theme()) {
   eval.facet.x <- eval(match.call()$facet.x, data)
   eval.facet.y <- eval(match.call()$facet.y, data)  
   
@@ -645,7 +643,7 @@ jjplot <- function(f, data = NULL,
   grid.newpage()
   if (is.null(eval.facet.x) && is.null(eval.facet.y)) {
     ## Compute plotting parameters.
-    plot.params <- .get.plot.params(f, stats, log.x, log.y, expand,
+    plot.params <- .get.plot.params(f, stats, log.x = log.x, log.y = log.y,
                                     xlab = xlab, ylab = ylab,
                                     labels.x = labels.x,
                                     labels.y = labels.y,
@@ -657,7 +655,7 @@ jjplot <- function(f, data = NULL,
                   eval.facet.x, eval.facet.y,
                   facet.nrow, facet.ncol,
                   facet.xorder, facet.yorder,
-                  log.x, log.y, expand,
+                  log.x = log.x, log.y = log.y,
                   xlab = xlab, ylab = ylab,
                   labels.x = labels.x, labels.y = labels.y,
                   squash.unused = squash.unused,

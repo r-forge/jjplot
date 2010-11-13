@@ -283,6 +283,7 @@ jjplot.stat.color <- function(state,
                               manual = NULL) {
   state$data$color <- eval(match.call()$color.expression, state$data)
   state$scales$color <- .make.color.scale(state$data$color, alpha, manual)
+  
   state
 }
 
@@ -365,5 +366,30 @@ jjplot.stat.normalize <- function(state, col = 'y', ignore.zeros = T) {
 jjplot.stat.smooth <- function(state, ...) {
   fit <- loess(y ~ x, state$data, ...)
   state$data$y <- predict(fit, state$data$x)
+  state
+}
+
+require(MASS)
+jjplot.stat.density2d <- function(state, w,
+                                  n = 128,
+                                  lims = c(range(state$data$x), range(state$data$y))) {
+  nx <- nrow(state$data)
+  gx <- seq(lims[1], lims[2], length = n)
+  gy <- seq(lims[3], lims[4], length = n)
+  h <- c(bandwidth.nrd(state$data$x), bandwidth.nrd(state$data$y))
+  if (missing(w)) {
+    w <- numeric(nx) + 1
+  } else {
+    w <- eval(match.call()$w, state$data)
+  }
+  h <- h / 4
+  ax <- outer(gx, state$data$x, "-") / h[1]
+  ay <- outer(gy, state$data$y, "-") / h[2]  
+  z <- (matrix(rep(w,n), nrow=n, ncol=nx, byrow=TRUE) * matrix(dnorm(ax), n, nx)) %*% t(matrix(dnorm(ay), n, nx))/(sum(w) * h[1] * h[2])  
+  df <- melt(z)
+  colnames(df) <- c("x", "y", "z")
+  df$x <- gx[df$x]
+  df$y <- gy[df$y]
+  state$data <- .bind.attr.columns(df, state$data)
   state
 }
