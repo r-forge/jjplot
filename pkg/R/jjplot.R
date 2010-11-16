@@ -199,15 +199,17 @@ require("reshape")
     if (is.factor(state$data$x)) {
       padding.x <<- c(expansion$x, padding.x)
     } else {
-      xrange <<- .jjplot.expand.range(state$data$x, expansion$x)
+      xrange <<- .jjplot.expand.range(expansion$x, xrange)
     }
-    ## padding.y <<- c(expansion$y, padding.y)
-    
+
+    if (is.factor(state$data$y)) {
+      padding.y <<- c(expansion$y, padding.y)
+    } else {
+      yrange <<- .jjplot.expand.range(expansion$y, yrange)
+    }
+
     xrange <<- .jjplot.expand.range(state$data$x, xrange)
     yrange <<- .jjplot.expand.range(state$data$y, yrange)
-
-
-    yrange <<- .jjplot.expand.range(state$data$y, expansion$y)
 
     if (is.null(xlab)) {
       xlab <<- state$x.expr
@@ -259,7 +261,7 @@ require("reshape")
   theme <- theme(.subset)
   xlab.rot <- theme$x.axis.angle
   ylab.rot <- theme$y.axis.angle  
-  
+
   label.x.info <- .jjplot.scale.params(xrange, xlab.rot,
                                        list(factor.order = x.factor.order,
                                             type = theme$x.axis.type))
