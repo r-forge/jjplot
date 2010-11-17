@@ -449,7 +449,6 @@ require("reshape")
               x = unit(-plot.params$label.y.width + .25, "lines"), rot = 90,
               gp = gpar(col = theme$y.axis.title.color, cex= 0.9))
   }
-
   grid.text(plot.params$title, y = unit(2, "lines"))
 
   ## Draw a right-hand strip.

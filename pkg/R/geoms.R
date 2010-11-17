@@ -9,6 +9,9 @@ jjplot.geom.line <- function(state,
                              lwd = 1.5,
                              size = NULL,
                              ordered = TRUE) {
+  if (nrow(state$data) == 0) {
+    return(NULL)
+  }
   if (ordered) {
     oo <- order(state$data$x)
   } else {
@@ -119,6 +122,9 @@ jjplot.geom.point <- function(state,
                               color = NULL,
                               border = NULL,
                               size = NULL) {
+  if (nrow(state$data) == 0) {
+    return(NULL)
+  }
   alphas <- .match.scale(alpha, state$data$alpha, state$scales, type="alpha")
 
   dd <- state$data
