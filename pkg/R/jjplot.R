@@ -158,8 +158,8 @@ require("reshape")
                                  scale.params = NULL) {
   ll <- jjplot.scale(data, scale.params)
   
-  cr <- cos(rotation * pi / 180)
-  sr <- sin(rotation * pi / 180)    
+  cr <- abs(cos(rotation * pi / 180))
+  sr <- abs(sin(rotation * pi / 180))
   
   widths <- lapply(ll$labels, function(x)
                    cr * unit(1, "strwidth", x) + sr * unit(1, "strheight", x))
@@ -433,7 +433,8 @@ require("reshape")
                          label = plot.params$labels.x,
                          gp = gpar(col = theme$x.axis.color, cex = 0.8))
     if (theme$x.axis.angle != 0) {
-      xa.grob <- editGrob(xa.grob, "labels", rot = theme$x.axis.angle, just="right")
+      xa.grob <- editGrob(xa.grob, "labels", rot = theme$x.axis.angle,
+                          just=if (sin(theme$x.axis.angle * pi / 180) < 0) "left" else "right")
     }
     grid.draw(xa.grob)
     
