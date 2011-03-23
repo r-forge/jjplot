@@ -393,3 +393,8 @@ jjplot.stat.density2d <- function(state, w,
   state$data <- .bind.attr.columns(df, state$data)
   state
 }
+
+jjplot.stat.subset <- function(state, ...) {
+  state$data <- subset(state$data, ...)
+  state
+}
