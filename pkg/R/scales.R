@@ -35,9 +35,9 @@
 
 .jjplot.expand.range.factor <- function(new.data, old.data) {
   if (is.null(old.data)) {
-    factor(levels(new.data))
+    factor(levels(new.data), levels = levels(new.data))
   } else {
-    stopifnot(levels(new.data) == levels(old.data))
+    stopifnot(levels(new.data)== levels(old.data))
     old.data
   }
 }

@@ -399,7 +399,8 @@ jjplot.stat.subset <- function(state, ...) {
   state
 }
 
-jjplot.stat.print <- function(state) {
-  print(state)
+
+jjplot.stat.print <- function(state, f) {
+  print(eval(match.call()$f, state$data))
   state
 }
