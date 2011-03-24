@@ -398,3 +398,8 @@ jjplot.stat.subset <- function(state, ...) {
   state$data <- subset(state$data, ...)
   state
 }
+
+jjplot.stat.print <- function(state) {
+  print(state)
+  state
+}

@@ -606,8 +606,8 @@ require("reshape")
   pushViewport(vpTree(top.vp, do.call(vpList, subplots)))
   for (ll in 1:num.facets) {
     seekViewport(paste(".subplot", ll, sep = "."))
-    cat("Doing facet ")
-    print(ll)
+##    cat("Doing facet ")
+##    print(ll)
     facet.info <- get.facet.info(ll)
     .subplot(f, stats,
              plot.params = plot.params[[ll]],

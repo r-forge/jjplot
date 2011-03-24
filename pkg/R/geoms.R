@@ -150,14 +150,12 @@ jjplot.geom.point <- function(state,
                 col = colors, fill = fills))
 }
 
+
 jjplot.geom.map <- function(state, database) {
   require(maps)
   regions <- map(database, plot = F)
-  print(head(regions$x))
-  id.lengths <- diff(c(0, which(is.na(regions$x)), length(regions$x)))  
-  grid.polygon(regions$x,
-               regions$y, id.lengths = id.lengths,
-               default.units="native")
+  grid.lines(regions$x, regions$y,
+             default.units = "native")
 }
 
 jjplot.geom.abline <- function(state,
