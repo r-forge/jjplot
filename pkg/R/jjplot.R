@@ -161,6 +161,8 @@ require("reshape")
   cr <- abs(cos(rotation * pi / 180))
   sr <- abs(sin(rotation * pi / 180))
   
+  ll$labels <- scale.params$labeler(ll$labels)
+
   widths <- lapply(ll$labels, function(x)
                    cr * unit(1, "strwidth", x) + sr * unit(1, "strheight", x))
   heights <- lapply(ll$labels, function(x)
@@ -264,10 +266,12 @@ require("reshape")
 
   label.x.info <- .jjplot.scale.params(xrange, xlab.rot,
                                        list(factor.order = x.factor.order,
-                                            type = theme$x.axis.type))
+                                            type = theme$x.axis.type,
+                                            labeler = theme$x.axis.labeler))
   label.y.info <- .jjplot.scale.params(yrange, ylab.rot,
                                        list(factor.order = y.factor.order,
-                                            type = theme$y.axis.type))
+                                            type = theme$y.axis.type,
+                                            labeler = theme$y.axis.labeler))
 
   labels.x <- label.x.info$labels
   labels.y <- label.y.info$labels
